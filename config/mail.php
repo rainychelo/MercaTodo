@@ -82,17 +82,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Global "From" addresss
+    | Global "From" address
     |--------------------------------------------------------------------------
     |
     | You may wish for all e-mails sent by your application to be sent from
-    | the same addresss. Here, you may specify a name and addresss that is
+    | the same address. Here, you may specify a name and address that is
     | used globally for all e-mails that are sent by your application.
     |
     */
 
     'from' => [
-        'addresss' => env('MAIL_FROM_addressS', 'hello@example.com'),
+        'address' => env('MAIL_FROM_address', 'hello@example.com'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 

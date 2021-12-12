@@ -5,15 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Provider extends Model
+class SaleDetail extends Model
 {
     use HasFactory;
 
     protected $fillable=[
-        'name','email','address','phone'
+        'sale_id',
+        'product_id',
+        'quantity',
+        'price',
+        'discount'
     ];
 
-    public  function products(){
+    public function product(){
         return $this->hasMany(Product::class);
     }
 }

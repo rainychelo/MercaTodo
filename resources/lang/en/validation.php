@@ -43,7 +43,7 @@ return [
     'digits_between' => 'The :attribute must be between :min and :max digits.',
     'dimensions' => 'The :attribute has invalid image dimensions.',
     'distinct' => 'The :attribute field has a duplicate value.',
-    'email' => 'The :attribute must be a valid email addresss.',
+    'email' => 'The :attribute must be a valid email address.',
     'ends_with' => 'The :attribute must end with one of the following: :values.',
     'exists' => 'The selected :attribute is invalid.',
     'file' => 'The :attribute must be a file.',
@@ -64,9 +64,9 @@ return [
     'in' => 'The selected :attribute is invalid.',
     'in_array' => 'The :attribute field does not exist in :other.',
     'integer' => 'The :attribute must be an integer.',
-    'ip' => 'The :attribute must be a valid IP addresss.',
-    'ipv4' => 'The :attribute must be a valid IPv4 addresss.',
-    'ipv6' => 'The :attribute must be a valid IPv6 addresss.',
+    'ip' => 'The :attribute must be a valid IP address.',
+    'ipv4' => 'The :attribute must be a valid IPv4 address.',
+    'ipv6' => 'The :attribute must be a valid IPv6 address.',
     'json' => 'The :attribute must be a valid JSON string.',
     'lt' => [
         'numeric' => 'The :attribute must be less than :value.',
@@ -150,7 +150,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | The following language lines are used to swap our attribute placeholder
-    | with something more reader friendly such as "E-Mail addresss" instead
+    | with something more reader friendly such as "E-Mail address" instead
     | of "email". This simply helps us make our message more expressive.
     |
     */
