@@ -26,7 +26,7 @@ class StoreRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|string|max:200|unique:providers',
-            'addres' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
             'phone' => 'required|string|min:9|max:9|unique:providers'
         ];
     }
@@ -43,9 +43,9 @@ class StoreRequest extends FormRequest
             'email.max' => 'Solo se permite 200 caracteres',
             'email.unique' => 'ya se encuentra registrado',
 
-            'addres.required' => 'Este campo es requerido',
-            'addres.string' => 'El valor no es el correcto',
-            'addres.max' => 'Solo se permite 255 caracteres',
+            'address.required' => 'Este campo es requerido',
+            'address.string' => 'El valor no es el correcto',
+            'address.max' => 'Solo se permite 255 caracteres',
 
             'phone.required' => 'Este campo es requerido',
             'phone.string' => 'El valor no es el correcto',

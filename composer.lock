@@ -2939,7 +2939,7 @@
                 "symfony/phpunit-bridge": "^4.4|^5.4"
             },
             "suggest": {
-                "ext-intl": "Needed to support internationalized email addresses"
+                "ext-intl": "Needed to support internationalized email addressses"
             },
             "type": "library",
             "extra": {
