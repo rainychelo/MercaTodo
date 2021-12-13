@@ -29,7 +29,10 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request)
     {
         $request->authenticate();
-
+        if (auth()->user()->status=='DEACTIVE'){
+            auth()->logout();
+            return redirect()->to('/');
+        }
         if (auth()->user()->role == 'admin') {
             return redirect()->to('/admin');
         } else {
