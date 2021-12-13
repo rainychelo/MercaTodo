@@ -1,25 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Http\Request;
 
-class AdminController extends Controller
+class adminController extends Controller
 {
     public function index(){
 
         $users=User::all();
 
         return view('admin.index',compact('users'));
-    }
-
-
-
-    public function destroy($id){
-        $user=User::find($id);
-        $user->delete();
-        return redirect()->route('admin.index');
     }
 
     public function update($id){
@@ -30,6 +22,12 @@ class AdminController extends Controller
             $user->status='DEACTIVE';
         }
         $user->save();
+        return redirect()->route('admin.index');
+    }
+
+    public function destroy($id){
+        $user=User::find($id);
+        $user->delete();
         return redirect()->route('admin.index');
     }
 }

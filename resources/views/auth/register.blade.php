@@ -1,46 +1,59 @@
-@extends('layouts.app')
+<x-guest-layout>
+    <x-auth-card>
+        <x-slot name="logo">
+            <a href="/">
+                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+            </a>
+        </x-slot>
 
-@section('title','Register')
+        <!-- Validation Errors -->
+        <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-@section('content')
-
-    <div class="block mx-auto my-12 p-8 bg-white w-1/3 border border-gry-200 rounded-lg shadow-lg">
-
-        <h1 class="text-5xl text-center pt-24">Register</h1>
-
-        <form class="mt-4" method="POST" action="">
+        <form method="POST" action="{{ route('register') }}">
             @csrf
 
-            <input type="text" class="border border-gray-200 rounded-md bg-gray-200 w-full text-lg
-             placeholder-gray-900 p-2 my-2 focus:bg-white" placeholder="Name" id="name" name="name">
+            <!-- Name -->
+            <div>
+                <x-label for="name" :value="__('Name')" />
 
-            @error('name')
-            <p class="border border-red-500 rounded-md bg-red-100 w-full text-red-600 p-2 my-w">* {{$message}}</p>
-            @enderror
+                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
+            </div>
 
-            <input type="email" class="border border-gray-200 rounded-md bg-gray-200 w-full text-lg
-             placeholder-gray-900 p-2 my-2 focus:bg-white" placeholder="Email" id="email" name="email">
+            <!-- Email Address -->
+            <div class="mt-4">
+                <x-label for="email" :value="__('Email')" />
 
-            @error('email')
-            <p class="border border-red-500 rounded-md bg-red-100 w-full text-red-600 p-2 my-w">* {{$message}}</p>
-            @enderror
+                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
+            </div>
 
-            <input type="password" class="border border-gray-200 rounded-md bg-gray-200 w-full text-lg
-             placeholder-gray-900 p-2 my-2 focus:bg-white" placeholder="Password" id="password" name="password">
+            <!-- Password -->
+            <div class="mt-4">
+                <x-label for="password" :value="__('Password')" />
 
-            @error('password')
-            <p class="border border-red-500 rounded-md bg-red-100 w-full text-red-600 p-2 my-w">* {{$message}}</p>
-            @enderror
+                <x-input id="password" class="block mt-1 w-full"
+                                type="password"
+                                name="password"
+                                required autocomplete="new-password" />
+            </div>
 
-            <input type="password" class="border border-gray-200 rounded-md bg-gray-200 w-full text-lg
-             placeholder-gray-900 p-2 my-2 focus:bg-white" placeholder="Password confirmation"
-                   id="password_confirmation" name="password_confirmation">
+            <!-- Confirm Password -->
+            <div class="mt-4">
+                <x-label for="password_confirmation" :value="__('Confirm Password')" />
 
-            <button type="submit" class="rounded-md bg-indigo-500 w-full text-lg text-white font-semibold
-            p-2 my-3 hover:bg-indigo-600">Send</button>
+                <x-input id="password_confirmation" class="block mt-1 w-full"
+                                type="password"
+                                name="password_confirmation" required />
+            </div>
 
+            <div class="flex items-center justify-end mt-4">
+                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
+                    {{ __('Already registered?') }}
+                </a>
+
+                <x-button class="ml-4">
+                    {{ __('Register') }}
+                </x-button>
+            </div>
         </form>
-    </div>
-
-
-@endsection
+    </x-auth-card>
+</x-guest-layout>

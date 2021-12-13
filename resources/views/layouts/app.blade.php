@@ -1,50 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('Mercatodo') - Laravel App</title>
+        <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Tailwind CSS Link -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.1/tailwind.min.css">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://kit.fontawesome.com/a23e6feb03.js"></script>
+        <!-- Styles -->
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
-</head>
-<body class="bg-gray-100 text-gray-800">
+        <!-- Scripts -->
+        <script src="{{ asset('js/app.js') }}" defer></script>
+    </head>
+    <body class="font-sans antialiased">
+        <div class="min-h-screen bg-gray-100">
+            @include('layouts.navigation')
 
-    <nav class="flex py-5 bg-indigo-500 text-white">
-        <div class="w-1/2 px-12 mr-auto">
-            <p class="text-2x1 font-bold">Mercatodo</p>
+            <!-- Page Heading -->
+            <header class="bg-white shadow">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    {{ $header }}
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <main>
+                {{ $slot }}
+            </main>
         </div>
-
-        <ul class="w-1/2 px-16 ml-auto flex justify-end pt-1">
-            @if(auth()->check())
-                <li class="mx-6">
-                    <p class="text-xl">Welcome <b>{{auth()->user()->name}}</b></p>
-                </li>
-                <a href="{{route('login.destroy')}}" class="font-bold
-                 py-3 px-4 rounded-md  bg-red-500 hover:bg-red-600">Log Out</a>
-                <li>
-
-                </li>
-            @else
-                <li class="mx-6">
-                    <a href="{{route('login.index')}}"  class="font-semibold
-                hover:bg-indigo-700 py-3 px-4 rounded-md">Log In</a>
-                </li>
-                <li>
-                    <a href="{{route('register.index')}}" class="font-semibold
-                border-2 border-white py-2 px-4 rounded-md hover:bg-white hover:text-indigo-700">Register</a>
-                </li>
-            @endif
-        </ul>
-    </nav>
-
-    @yield('content')
-
-</body>
+    </body>
 </html>
