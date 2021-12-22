@@ -1,4 +1,6 @@
 <x-app-layout>
+
+
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Admin') }}
@@ -19,7 +21,7 @@
                             <th class="w-1/8 py-4 ...">Name</th>
                             <th class="w-1/16 py-4 ...">Email</th>
                             <th class="w-1/16 py-4 ...">Status</th>
-                            <th class="w-20 py-4 ...">Actions</th>
+                            <th class="w-1/4 py-4 ...">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -35,13 +37,13 @@
                                         @csrf
                                         @method('delete')
                                         <button class="bg-red-500 text-white px-3 py-1 rounded-sm mx-1">
-                                            <i class="fas fa-trash"></i></button>
+                                            <i class="fas fa-trash"></i>Delete</button>
                                     </form>
                                     <form action="{{route('admin.update',$row->id)}}" method="POST">
                                         @csrf
                                         @method('put')
                                         <button class="bg-green-500 text-white px-3 py-1 rounded-sm">
-                                            <i class="fas fa-eye-slash"></i></button>
+                                            <i class="fas fa-eye-slash"></i>Change status</button>
                                     </form>
                                 </td>
                             </tr>
