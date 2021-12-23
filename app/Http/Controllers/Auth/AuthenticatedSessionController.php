@@ -29,7 +29,7 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request)
     {
         $request->authenticate();
-        if (auth()->user()->status=='DEACTIVE' || auth()->user()->emai_verified_at == null){
+        if (auth()->user()->status=='DEACTIVE'){
             auth()->logout();
             return redirect()->to('/');
         }
@@ -38,6 +38,8 @@ class AuthenticatedSessionController extends Controller
         }
 
         $request->session()->regenerate();
+
+        auth()->login();
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }
