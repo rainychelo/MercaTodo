@@ -18,7 +18,6 @@ class CreateProductsTable extends Migration
             $table->string('name',120)->unique();
             $table->integer('value');
             $table->foreignId('category_id')->constrained();
-            $table->foreignId('image_id')->constrained();
             $table->timestamp('deactive_at')->nullable();
             $table->timestamps();
 
