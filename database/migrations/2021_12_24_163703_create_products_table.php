@@ -17,12 +17,11 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('name',120)->unique();
             $table->integer('value');
-            $table->timestamp('deactive_at');
-            $table->unsignedBigInteger('category_id');
-            $table->foreign('category_id')->references('id')->on('categories');
-            $table->unsignedBigInteger('image_id');
-            $table->foreign('image_id')->references('id')->on('images');
+            $table->foreignId('category_id')->constrained();
+            $table->foreignId('image_id')->constrained();
+            $table->timestamp('deactive_at')->nullable();
             $table->timestamps();
+
 
         });
     }
