@@ -8,8 +8,10 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\adminController;
+use App\Http\Controllers\CategoryController;
 
 Route::get('/register', [RegisteredUserController::class, 'create'])
                 ->middleware('guest')
@@ -69,3 +71,17 @@ Route::get('/admin', [AdminController::class, 'index'])
     ->name('admin.index');
 
 Route::resource('admin', AdminController::class);
+
+Route::get('/category', [CategoryController::class, 'create'])
+    ->middleware('auth')
+    ->name('category');
+
+Route::post('/category', [CategoryController::class, 'store'])
+    ->middleware('auth');
+
+Route::get('/product', [ProductController::class, 'create'])
+    ->middleware('auth')
+    ->name('product');
+
+Route::post('/product', [ProductController::class, 'store'])
+    ->middleware('auth');
