@@ -15,14 +15,9 @@ class Product extends Model
         'name',
         'value',
         'category',
-        'image_path'
     ];
 
     public  function category(){
         return $this->belongsTo(Category::class);
-    }
-
-    public  function image(){
-        return $this->belongsTo(Image::class);
     }
 }
