@@ -26,8 +26,8 @@ class StoreProductRequest extends FormRequest
         return [
             'name' => 'required|unique:products|string|max:120',
             'value' => 'required',
-            'category_id' => 'required|interger|exists:App\Category.id',
-            'image_id' => 'interger|interger|exists:App\image.id'
+            'category' => 'required',
+            'image'=>'required|mimes:jpg,png,jpeg|max:5048'
         ];
     }
 }
