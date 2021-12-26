@@ -72,7 +72,7 @@ Route::get('/admin', [AdminController::class, 'index'])
 
 Route::resource('admin', AdminController::class);
 
-Route::get('/category', [CategoryController::class, 'create'])
+Route::get('/category', [CategoryController::class, 'index'])
     ->middleware('auth')
     ->name('category');
 
