@@ -10,8 +10,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories=Category::get();
-        return view('admin.category.index',compact('categories'));
+        return view('admin.category.category');
     }
 
     public function create()
@@ -41,9 +40,10 @@ class CategoryController extends Controller
         return redirect()->route('categories.index');
     }
 
-    public function destroy(Category $category)
+    public function destroy($id)
     {
+        $category=Category::find($id);
         $category->delete();
-        return redirect()->route('categories.index');
+        return redirect()->route('admin.category.index');
     }
 }
