@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\View\View;
 
@@ -66,6 +67,17 @@ class ProductController extends Controller
         }
         $data=$request->only('name','value');
         $product->update($data);
+        return redirect()->route('product.index');
+    }
+
+    public function updateStatus($id){
+        $product=Product::find($id);
+        if ($product->deactive_at != null){
+            $product->deactive_at=Carbon::now();
+        }else{
+            $product->deactive_at=null;
+        }
+        $product->save();
         return redirect()->route('product.index');
     }
 
