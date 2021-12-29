@@ -29,13 +29,6 @@
             </div>
 
             <div>
-                <x-label for="category" :value="__('Category')"/>
-
-                <x-input id="category" class="block mt-1 w-full" type="text" name="category" :value="old('category')"
-                         required autofocus/>
-            </div>
-
-            <div>
                 <x-label for="image" :value="__('Image')"/>
                 <input type="file" name="image">
             </div>

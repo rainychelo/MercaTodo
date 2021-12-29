@@ -18,9 +18,9 @@
                     </button>
                 </form>
 
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg py-2">
 
-                    <table class="table-fixed w-full">
+                    <table class="table-fixed w-full ">
                         <thead>
                         <tr class="bg-indigo-500 text-white">
                             <th class="w-20 py-4 ...">ID</th>
@@ -39,6 +39,9 @@
                                 <td class="p-3 text-center">{{$row->name}}</td>
                                 <td class="p-3 text-center">{{$row->value}}</td>
                                 <td class="p-3 text-center">{{$row->status}}</td>
+                                <td class="p-3 text-center">
+                                    <img src="{{asset('images/'.$row->image_path)}}" alt="">
+                                </td>
                                 <td class="p-3 flex justify-center">
 
                                     <form action="{{route('product.destroy',$row->id)}}" method="POST">
@@ -57,9 +60,9 @@
                                     </form>
                                     <form action="{{route('product.edit',$row->id)}}" method="POST">
                                         @csrf
-                                        @method('delete')
-                                        <button class="bg-red-500 text-white px-3 py-1 rounded-sm mx-1">
-                                            <i class="fas fa-trash"></i>Delete
+                                        @method('get')
+                                        <button class="bg-yellow-600 text-white px-3 py-1 rounded-sm mx-1">
+                                            <i class="fas fa-trash"></i>Edit
                                         </button>
                                     </form>
                                 </td>
