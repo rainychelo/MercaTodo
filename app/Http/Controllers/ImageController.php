@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Image;
-use App\Http\Requests\StoreImageRequest;
-use App\Http\Requests\UpdateImageRequest;
+use App\Http\Requests\Image\StoreImagetRequest;
+use App\Http\Requests\Image\UpdateImagetRequest;
 
 class ImageController extends Controller
 {
@@ -31,12 +31,19 @@ class ImageController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreImageRequest  $request
+     * @param  \App\Http\Requests\Image\StoreImagetRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreImageRequest $request)
+    public function store(StoreImagetRequest $request)
     {
-        //
+        $newImageName = time() . '-' . $request->name . '.' . $request->image->extencion;
+
+        $request->image->move(public_path('images'),$newImageName);
+
+        Image::create([
+            'product_id'=>$request->product_id,
+            'image_path'=>$newImageName
+        ]);
     }
 
     /**
@@ -64,13 +71,13 @@ class ImageController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateImageRequest  $request
+     * @param  \App\Http\Requests\Image\UpdateImagetRequest  $request
      * @param  \App\Models\Image  $image
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateImageRequest $request, Image $image)
+    public function update(UpdateImagetRequest $request, Image $image)
     {
-        //
+
     }
 
     /**
@@ -81,6 +88,6 @@ class ImageController extends Controller
      */
     public function destroy(Image $image)
     {
-        //
+
     }
 }
