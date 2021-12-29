@@ -32,33 +32,35 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($products as $row)
+                        @foreach($products as $product)
 
                             <tr>
-                                <td class="py-3 px-6">{{$row->id}}</td>
-                                <td class="p-3 text-center">{{$row->name}}</td>
-                                <td class="p-3 text-center">{{$row->value}}</td>
-                                <td class="p-3 text-center">{{$row->status}}</td>
+                                <td class="py-3 px-6">{{$product->id}}</td>
+                                <td class="p-3 text-center">{{$product->name}}</td>
+                                <td class="p-3 text-center">{{$product->value}}</td>
+                                <td class="p-3 text-center">{{$product->status}}</td>
                                 <td class="p-3 text-center">
-                                    <img src="{{asset('images/'.$row->image_path)}}" alt="">
+                                    <img src="{{asset('images/'.$product->image_path)}}" alt="">
                                 </td>
                                 <td class="p-3 flex justify-center">
 
-                                    <form action="{{route('product.destroy',$row->id)}}" method="POST">
+                                    <form action="{{route('product.destroy',$product->id)}}" method="POST">
                                         @csrf
                                         @method('delete')
                                         <button class="bg-red-500 text-white px-3 py-1 rounded-sm mx-1">
                                             <i class="fas fa-trash"></i>Delete
                                         </button>
                                     </form>
-                                    <form action="{{route('product.update',$row->id)}}" method="POST">
+
+                                    <form action="{{route('product.status', $product->id)}}" method="POST">
                                         @csrf
                                         @method('put')
                                         <button class="bg-green-500 text-white px-3 py-1 rounded-sm">
                                             <i class="fas fa-eye-slash"></i>Change status
                                         </button>
                                     </form>
-                                    <form action="{{route('product.edit',$row->id)}}" method="POST">
+
+                                    <form action="{{route('product.edit',$product->id)}}" method="POST">
                                         @csrf
                                         @method('get')
                                         <button class="bg-yellow-600 text-white px-3 py-1 rounded-sm mx-1">

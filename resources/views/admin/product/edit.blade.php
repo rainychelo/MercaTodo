@@ -27,6 +27,7 @@
                 <x-input id="value" class="block mt-1 w-full" type="number" name="value" :value="old('value') ?? $product->value" required
                          autofocus/>
             </div>
+
             <div class="py-5">
                 <img src="{{asset('images/'.$product->image_path)}}" alt="Current Image">
             </div>
