@@ -74,14 +74,12 @@ Route::resource('admin', AdminController::class);
 
 Route::get('/category', [CategoryController::class, 'index'])
     ->middleware('auth')
-    ->name('category');
+    ->name('category.index');
 
-Route::post('/category', [CategoryController::class, 'store'])
-    ->middleware('auth');
+Route::resource('category', CategoryController::class);
 
-Route::get('/product', [ProductController::class, 'create'])
+Route::get('/product', [ProductController::class, 'index'])
     ->middleware('auth')
-    ->name('product');
+    ->name('product.index');
 
-Route::post('/product', [ProductController::class, 'store'])
-    ->middleware('auth');
+Route::resource('product', ProductController::class);
