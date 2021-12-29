@@ -24,11 +24,9 @@ class UpdateProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|unique:products|string|unique:products,name'.
-                $this->route('product')->id .'|max:120',
+            'name'=>'required|string|max:120',
             'value'=>'required',
-            'category_id'=>'required|interger|exists:App\Category.id',
-            'provider_id'=>'required|interger|exists:App\Provider.id'
+            'image'=>'mimes:jpg,png,jpeg|max:5048'
         ];
     }
 }

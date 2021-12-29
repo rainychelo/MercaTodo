@@ -5,63 +5,79 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
-use App\Models\Category;
-use App\Models\Image;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\View\View;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index() : View
     {
-        $products = Product::get();
-        return view('admin.product.product', compact('products'));
+        $products = Product::all();
+        return view('admin.product.index', compact('products'));
     }
 
     public function create()
     {
-        $categories = Category::get();
-        $images = Image::get();
-        return view('admin.product.product', compact('categories', 'images'));
+        return view('admin.product.create');
     }
 
     public function store(StoreProductRequest $request)
     {
-        $newImageName = time() . '-' . $request->name . $request->image->extension();
+        $newImageName = time() . '-' . $request->name .'.'. $request->image->extension();
 
         $request->image->move(public_path('images'), $newImageName);
-
-
 
         Product::create([
             'name'=>$request->input('name'),
             'value'=>$request->input('value'),
-            'category'=>$request->input('category'),
             'image_path'=>$newImageName
         ]);
-        return redirect()->route('products.index');
+
+        $products = Product::all();
+        return view('admin.product.index', compact('products'));
     }
 
-    public function show(Product $product)
+    public function show($id)
     {
-        return view('admin.products.show', compact('product'));
+        $product = Product::find($id);
+        return view('admin.product.show',compact('product'));
     }
 
-    public function edit(Product $product)
+    public function edit($id)
     {
-        $categories = Category::get();
-        $images = Image::get();
-        return view('admin.products.show', compact('product', 'categories', 'images'));
+        $product=Product::find($id);
+        return view('admin.product.edit',compact('product'));
     }
 
     public function update(UpdateProductRequest $request, Product $product)
     {
-        $product->update($request->all());
-        return redirect()->route('products.index');
+        if ($request->image != null){
+            $newImageName = time() . '-' . $request->name .'.'. $request->image->extension();
+            $request->image->move(public_path('images'), $newImageName);
+            $data[]=$request;
+
+            $image='images/'. $product->image_path;
+            if (File::exists($image)){
+                File::delete($image);
+            }
+
+            $data['image_path']=$newImageName;
+            $product->update($data);
+        }
+        $data=$request->only('name','value');
+        $product->update($data);
+        return redirect()->route('product.index');
     }
 
     public function destroy(Product $product)
     {
+        $image='images/'. $product->image_path;
+
+
+        if (File::exists($image)){
+            File::delete($image);
+        }
         $product->delete();
-        return redirect()->route('products.index');
+        return redirect()->route('product.index');
     }
 }
