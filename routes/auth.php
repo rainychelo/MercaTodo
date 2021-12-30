@@ -12,6 +12,7 @@ use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\adminController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductChangeStatus;
 
 Route::get('/register', [RegisteredUserController::class, 'create'])
                 ->middleware('guest')
@@ -81,5 +82,9 @@ Route::resource('category', CategoryController::class);
 Route::get('/product', [ProductController::class, 'index'])
     ->middleware('auth')
     ->name('product.index');
+
+Route::put('/product', [ProductController::class, 'updateStatus'])
+    ->middleware('auth')
+    ->name('product.status');
 
 Route::resource('product', ProductController::class);
