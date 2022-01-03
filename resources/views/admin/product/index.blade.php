@@ -55,7 +55,7 @@
                             <tr>
                                 <td class="py-3 px-6">{{$product->id}}</td>
                                 <td class="p-3 text-center">{{$product->name}}</td>
-                                <td class="p-3 text-center">{{$product->value}}</td>
+                                <td class="p-3 text-center">{{$product->value}} {{$currency}}</td>
                                 <td class="p-3 text-center">{{$product->deactive_at}}</td>
                                 <td class="p-3 text-center">
                                     <img src="{{asset('images/'.$product->image_path)}}" alt="">
