@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Product\SearchRequest;
 use App\Models\Product;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
@@ -11,9 +12,11 @@ use Illuminate\View\View;
 
 class ProductController extends Controller
 {
-    public function index() : View
+    public function index(SearchRequest $request): View
     {
-        $products = Product::all();
+        //dd($request->all());
+        $products = Product::where('name', 'LIKE', '%' . $request->input('search') . '%')->paginate(3);
+
         return view('admin.product.index', compact('products'));
     }
 
@@ -24,14 +27,14 @@ class ProductController extends Controller
 
     public function store(StoreProductRequest $request)
     {
-        $newImageName = time() . '-' . $request->name .'.'. $request->image->extension();
+        $newImageName = time() . '-' . $request->name . '.' . $request->image->extension();
 
         $request->image->move(public_path('images'), $newImageName);
 
         Product::create([
-            'name'=>$request->input('name'),
-            'value'=>$request->input('value'),
-            'image_path'=>$newImageName
+            'name' => $request->input('name'),
+            'value' => $request->input('value'),
+            'image_path' => $newImageName
         ]);
 
         $products = Product::all();
@@ -41,52 +44,42 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::find($id);
-        return view('admin.product.show',compact('product'));
+        return view('admin.product.show', compact('product'));
     }
 
     public function edit($id)
     {
-        $product=Product::find($id);
-        return view('admin.product.edit',compact('product'));
+        $product = Product::find($id);
+        return view('admin.product.edit', compact('product'));
     }
 
     public function update(UpdateProductRequest $request, Product $product)
     {
-        if ($request->image != null){
-            $newImageName = time() . '-' . $request->name .'.'. $request->image->extension();
+        if ($request->image != null) {
+            $newImageName = time() . '-' . $request->name . '.' . $request->image->extension();
             $request->image->move(public_path('images'), $newImageName);
-            $data[]=$request;
+            $data[] = $request;
 
-            $image='images/'. $product->image_path;
-            if (File::exists($image)){
+            $image = 'images/' . $product->image_path;
+            if (File::exists($image)) {
                 File::delete($image);
             }
 
-            $data['image_path']=$newImageName;
+            $data['image_path'] = $newImageName;
             $product->update($data);
         }
-        $data=$request->only('name','value');
-        $product->update($data);
-        return redirect()->route('product.index');
-    }
 
-    public function updateStatus($id){
-        $product=Product::find($id);
-        if ($product->deactive_at != null){
-            $product->deactive_at=Carbon::now();
-        }else{
-            $product->deactive_at=null;
-        }
-        $product->save();
+        $data = $request->only('name', 'value');
+        $product->update($data);
         return redirect()->route('product.index');
     }
 
     public function destroy(Product $product)
     {
-        $image='images/'. $product->image_path;
+        $image = 'images/' . $product->image_path;
 
 
-        if (File::exists($image)){
+        if (File::exists($image)) {
             File::delete($image);
         }
         $product->delete();
