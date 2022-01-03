@@ -9,7 +9,7 @@ class adminController extends Controller
 {
     public function index(){
 
-        $users=User::all();
+        $users=User::paginate(10);
 
         return view('admin.index',compact('users'));
     }
