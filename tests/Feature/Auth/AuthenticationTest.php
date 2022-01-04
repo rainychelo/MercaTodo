@@ -28,7 +28,6 @@ class AuthenticationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(RouteServiceProvider::HOME);
     }
 
     public function test_users_can_not_authenticate_with_invalid_password()
@@ -38,6 +37,24 @@ class AuthenticationTest extends TestCase
         $this->post('/login', [
             'email' => $user->email,
             'password' => 'wrong-password',
+        ]);
+
+        $this->assertGuest();
+    }
+
+    public function test_users_can_not_login_after_missed_logins(){
+        $this->refreshTestDatabase();
+        $user = User::factory()->create();
+
+        for ($i =1;$i<=5;$i++){
+            $this->post('/login', [
+                'email' => $user->email,
+                'password' => 'wrong-password',
+            ]);
+        }
+        $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'password',
         ]);
 
         $this->assertGuest();
