@@ -16,8 +16,9 @@ class ProductController extends Controller
     {
         //dd($request->all());
         $products = Product::where('name', 'LIKE', '%' . $request->input('search') . '%')->paginate(3);
+        $currency= config('app.currency');
 
-        return view('admin.product.index', compact('products'));
+        return view('admin.product.index', compact('products','currency'));
     }
 
     public function create()
@@ -38,13 +39,15 @@ class ProductController extends Controller
         ]);
 
         $products = Product::all();
-        return view('admin.product.index', compact('products'));
+        $currency= config('app.currency');
+        return view('admin.product.index', compact('products','currency'));
     }
 
     public function show($id)
     {
         $product = Product::find($id);
-        return view('admin.product.show', compact('product'));
+        $currency= config('app.currency');
+        return view('admin.product.show', compact('product','currency'));
     }
 
     public function edit($id)
