@@ -14,10 +14,10 @@ class ProductController extends Controller
 {
     public function index(SearchRequest $request): View
     {
-        //dd($request->all());
-        $products = Product::where('name', 'LIKE', '%' . $request->input('search') . '%')->paginate(3);
+        $products = Product::where('name', 'LIKE', '%' . $request->input('search') . '%')->paginate(5);
         $currency= config('app.currency');
 
+        //admin.product.index
         return view('admin.product.index', compact('products','currency'));
     }
 
@@ -35,12 +35,11 @@ class ProductController extends Controller
         Product::create([
             'name' => $request->input('name'),
             'value' => $request->input('value'),
-            'image_path' => $newImageName
+            'image_path' => $newImageName,
+            'stock'=>$request->input('stock')
         ]);
 
-        $products = Product::all();
-        $currency= config('app.currency');
-        return view('admin.product.index', compact('products','currency'));
+        return redirect()->route('product.index');
     }
 
     public function show($id)
@@ -72,7 +71,7 @@ class ProductController extends Controller
             $product->update($data);
         }
 
-        $data = $request->only('name', 'value');
+        $data = $request->only('name', 'value','stock');
         $product->update($data);
         return redirect()->route('product.index');
     }

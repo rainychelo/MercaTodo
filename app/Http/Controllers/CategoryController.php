@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Http\Requests\Category\StoreCategorytRequest;
 use App\Http\Requests\Category\UpdateCategorytRequest;
+use Illuminate\View\View;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index() : View
     {
         $categories=Category::paginate(10);
         return view('admin.category.index', compact('categories'));
