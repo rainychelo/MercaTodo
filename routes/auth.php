@@ -9,10 +9,10 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SalesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\adminController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProductChangeStatus;
 
 Route::get('/register', [RegisteredUserController::class, 'create'])
     ->middleware('guest')
@@ -85,6 +85,8 @@ Route::get('/product', [ProductController::class, 'index'])
 
 Route::resource('product', ProductController::class);
 
-Route::put('/product/Status', [ProductChangeStatus::class, 'update'])
+Route::get('/sales', [SalesController::class, 'index'])
     ->middleware('auth')
-    ->name('status');
+    ->name('sales.index');
+
+Route::resource('sales', SalesController::class);
