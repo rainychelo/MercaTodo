@@ -17,7 +17,7 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('name',120)->unique();
             $table->bigInteger('value');
-            //$table->foreignId('category_id')->constrained();
+            $table->bigInteger('stock')->nullable();
             $table->string('image_path');
             $table->timestamp('deactive_at')->nullable();
             $table->timestamps();
