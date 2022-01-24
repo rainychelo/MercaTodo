@@ -43,6 +43,7 @@
                         <tr class="bg-indigo-500 text-white">
                             <th class="w-20 py-4 ...">ID</th>
                             <th class="w-1/8 py-4 ...">Name</th>
+                            <th class="w-1/16 py-4 ...">Stock</th>
                             <th class="w-1/16 py-4 ...">value</th>
                             <th class="w-1/16 py-4 ...">Deactive at</th>
                             <th class="w-1/16 py-4 ...">Image</th>
@@ -55,6 +56,7 @@
                             <tr>
                                 <td class="py-3 px-6">{{$product->id}}</td>
                                 <td class="p-3 text-center">{{$product->name}}</td>
+                                <td class="p-3 text-center">{{$product->stock}}</td>
                                 <td class="p-3 text-center">{{$product->value}} {{$currency}}</td>
                                 <td class="p-3 text-center">{{$product->deactive_at}}</td>
                                 <td class="p-3 text-center">
@@ -79,13 +81,10 @@
                                             </button>
                                         </form>
 
-                                        <form method="POST" action="{{ route('status')}}">
-                                            @csrf
-                                            @method('put')
-                                            <button class="bg-blue-500 text-white px-3 py-1 rounded-sm mx-1">
-                                                <i class="fas fa-trash"></i>Change status
-                                            </button>
-                                        </form>
+                                        <button class="bg-blue-500 text-white px-3 py-1 rounded-sm mx-1">
+                                            <i class="fas fa-trash"></i>Change status
+                                        </button>
+
 
                                         <form action="{{route('product.destroy',$product->id)}}" method="POST">
                                             @csrf

@@ -15,7 +15,8 @@ class Product extends Model
         'name',
         'value',
         'image_path',
-        'deactive_at'
+        'deactive_at',
+        'stock'
     ];
 
     public  function category(){
