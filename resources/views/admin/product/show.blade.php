@@ -23,8 +23,9 @@
                         <strong>{{$product->stock}} Units available</strong>
                     </div>
                     <div>
-                        <form action="{{ route('sales.index') }}">
+                        <form method="POST" action="{{ route('shoppingCars.items.store',['product'=>$product,'shoppingCar'=>$shoppingCar]) }}">
                             @csrf
+                            @dd($shoppingCar->shoppingCarItems)
                             <tr>
                                 <td>
                                     <input id="search" name="amount" type="number" min="1"

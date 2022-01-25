@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\ShoppingCarItemController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\adminController;
 use App\Http\Controllers\CategoryController;
@@ -85,8 +86,8 @@ Route::get('/product', [ProductController::class, 'index'])
 
 Route::resource('product', ProductController::class);
 
-Route::get('/sales', [SalesController::class, 'index'])
-    ->middleware('auth')
-    ->name('sales.index');
 
-Route::resource('sales', SalesController::class);
+Route::post('/shopping-cars/{shoppingCar}/create/{product}', [ShoppingCarItemController::class, 'store'])
+    ->name('shoppingCars.items.store');
+
+

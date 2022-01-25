@@ -42,11 +42,11 @@ class ProductController extends Controller
         return redirect()->route('product.index');
     }
 
-    public function show($id)
+    public function show(Product $product):View
     {
-        $product = Product::find($id);
         $currency= config('app.currency');
-        return view('admin.product.show', compact('product','currency'));
+        $shoppingCar=auth()->user()->shoppingCarActive();
+        return view('admin.product.show', compact('product','currency','shoppingCar'));
     }
 
     public function edit($id)
