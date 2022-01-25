@@ -8,6 +8,8 @@ use App\Http\Requests\UpdateSalesRequest;
 use App\Models\ShoppingCart;
 use App\Providers\RouteServiceProvider;
 use Dnetix\Redirection\PlacetoPay;
+use http\Env\Request;
+use Illuminate\Routing\Route;
 use Illuminate\View\View;
 
 class SalesController extends Controller
@@ -20,7 +22,8 @@ class SalesController extends Controller
     {
         //
     }
-    public function store()
+    //cambiar tipo request
+    public function store(\Illuminate\Http\Request $request)
     {
         // crear un provider para el inicio de sesion en place to pay
         $login= config('app.login');
@@ -47,20 +50,26 @@ class SalesController extends Controller
                 ],
             ],
             'expiration' => date('c', strtotime('+2 days')),
-            'returnUrl' => 'http://example.com/response?reference=' . $reference,//agregar ruta para ver el estado de la transaccion
-            'ipAddress' => '127.0.0.1',
-            'userAgent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36',
+            'returnUrl' => route('dashboard'),
+            'ipAddress' => $request->ip(),
+            'userAgent' => $request->userAgent(),
         ];
 
+        //agrego la venta a base de datos
+        //poner estatus poner en defecto pendiente
 
+        //respuesta de que la peticion fu exitosa, no es la del pago
         $response = $placetopay->request($request);
         if ($response->isSuccessful()) {
-            //agregar el estado a la base de datos
-            $response->processUrl();
+            // agregar columna sales que guarde id de la perticion y otra para la id que retorne la pasarela
+            //hacer dd a response para ver all lo que me entrega
+            return redirect($response->processUrl());
         } else {
-            //agregar el estado a la base de datos, informar del error al cliente
+            // hacer redirect a una vista que me muestre el mensaje de error
             $response->status()->message();
         }
+
+        //si sale fallido tengo que cambiar la uuid de referencia
     }
 
     public function show(Sales $sales)
@@ -71,7 +80,7 @@ class SalesController extends Controller
     public function update(UpdateSalesRequest $request, Sales $sales)
     {
 
-        $placetopay = new Dnetix\Redirection\PlacetoPay([
+        $placetopay = new PlacetoPay([
             'login' => 'YOUR_LOGIN', // Provided by PlacetoPay
             'tranKey' => 'YOUR_TRANSACTIONAL_KEY', // Provided by PlacetoPay
             'baseUrl' => 'https://THE_BASE_URL_TO_POINT_AT',
