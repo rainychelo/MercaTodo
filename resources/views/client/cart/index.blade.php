@@ -8,7 +8,14 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <h1 class="text-3xl text-center font-bold">PRODUCTS</h1>
+                <h1 class="text-3xl text-center font-bold">Shopping cart</h1>
+
+                <form method="POST" action="{{route('sale.store')}}">
+                    @csrf
+                    <button class="bg-yellow-500 text-white px-3 py-1 rounded-sm mx-2">
+                        <i class="fas fa-trash"></i>Buy
+                    </button>
+                </form>
 
                 <div class="py-2">
                     <form method="GET" action="{{ route('product.index')}}">
@@ -31,24 +38,26 @@
                     <table class="table-fixed w-full ">
                         <thead>
                         <tr class="bg-indigo-500 text-white">
-                            <th class="w-20 py-4 ...">Name</th>
-                            <th class="w-1/16 py-4 ...">value</th>
+                            <th class="w-40 py-4 ...">Name</th>
+                            <th class="w-1/16 py-4 ...">Value</th>
+                            <th class="w-1/16 py-4 ...">Amount</th>
                             <th class="w-1/16 py-4 ...">Image</th>
                             <th class="w-1/4 py-4 ...">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($products as $product)
+                        @foreach($shoppingCar as $product)
 
                             <tr>
-                                <td class="py-3 px-6">{{$product->name}}</td>
-                                <td class="p-3 text-center">{{$product->value}} {{$currency}}</td>
+                                <td class="py-3 px-6">{{$product->product->name}}</td>
+                                <td class="p-3 text-center">{{$product->product->value}} {{$currency}}</td>
+                                <td class="p-3 text-center">{{$product->amount}}</td>
                                 <td class="p-3 text-center">
-                                    <img src="{{asset('images/'.$product->image_path)}}" alt="">
+                                    <img src="{{asset('images/'.$product->product->image_path)}}" alt="">
                                 </td>
                                 <td class="p-3 flex justify-center">
 
-                                    <form action="{{route('product.show', $product->id)}}" method="POST">
+                                    <form action="{{route('product.show', $product->product->id)}}" method="POST">
                                         @csrf
                                         @method('get')
                                         <button class="bg-green-500 text-white px-3 py-1 rounded-sm">
@@ -57,7 +66,7 @@
                                     </form>
 
                                     @can('admin.index')
-                                        <form action="{{route('product.edit',$product->id)}}" method="POST">
+                                        <form action="{{route('product.edit',$product->product->id)}}" method="POST">
                                             @csrf
                                             @method('get')
                                             <button class="bg-yellow-600 text-white px-3 py-1 rounded-sm mx-1">
@@ -65,23 +74,19 @@
                                             </button>
                                         </form>
 
-                                        <form action="{{route('product.destroy',$product->id)}}" method="POST">
+                                        <form action="{{route('shoppingCarItem.destroy',$product)}}" method="POST">
                                             @csrf
-                                            @method('delete')
                                             <button class="bg-red-500 text-white px-3 py-1 rounded-sm mx-1">
                                                 <i class="fas fa-trash"></i>Delete
                                             </button>
                                         </form>
                                     @endcan
-
                                 </td>
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
-                    <div>
-                        {!! $products->links() !!}
-                    </div>
+
                 </div>
             </div>
         </div>
