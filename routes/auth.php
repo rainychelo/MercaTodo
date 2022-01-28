@@ -15,7 +15,6 @@ use App\Http\Controllers\ShoppingCarController;
 use App\Http\Controllers\ShoppingCarItemController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\adminController;
-use App\Http\Controllers\CategoryController;
 
 Route::get('/register', [RegisteredUserController::class, 'create'])
     ->middleware('guest')
@@ -76,12 +75,6 @@ Route::get('/admin', [AdminController::class, 'index'])
 
 Route::resource('admin', AdminController::class);
 
-Route::get('/category', [CategoryController::class, 'index'])
-    ->middleware('auth')
-    ->name('category.index');
-
-Route::resource('category', CategoryController::class);
-
 Route::get('/product', [ProductController::class, 'index'])
     ->middleware('auth')
     ->name('product.index');
@@ -101,5 +94,5 @@ Route::resource('shoppingCar', ShoppingCarController::class);
 
 Route::resource('sale',SalesController::class);
 
-Route::get('error', [ErrorView::class,'index'])->name('error.index');
+Route::get('/error', [ErrorView::class,'index'])->name('error.index');
 

@@ -24,7 +24,7 @@ class SaleTest extends TestCase
 
     public function test_sale_can_be_created(){
 
-        $response = $this->post('/sale');
+        $response = $this->post(route('sale.store'));
 
         $this->assertCount(1, Sale::all());
 

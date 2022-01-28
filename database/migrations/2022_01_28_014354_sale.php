@@ -20,6 +20,7 @@ class Sale extends Migration
             $table->string('reference');
             $table->string('description');
             $table->string('status')->nullable();
+            $table->bigInteger('ptpid');
             $table->timestamps();
 
             $table->foreign('user_id')->on('users')->references('id')->onDelete('cascade');

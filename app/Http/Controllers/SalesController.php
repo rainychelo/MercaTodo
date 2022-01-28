@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\IntegrationPTP;
 use App\Models\Sale;
-use App\Models\ShoppingCar;
-use App\Providers\RouteServiceProvider;
-use Dnetix\Redirection\PlacetoPay;
-use Illuminate\Routing\Route;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -15,50 +13,38 @@ class SalesController extends Controller
     public function index(): View
     {
         $sales = Sale::where('user_id', auth()->user()->id)->paginate(5);
-        $currency=config('app.currency');
-        return view('client.sale.index',compact('sales','currency'));
+        $currency = config('app.currency');
+        return view('client.sale.index', compact('sales', 'currency'));
     }
-    public function create()
-    {
-        //
+
+    public function create(){
+
     }
-    //cambiar tipo request
-    public function store(\Illuminate\Http\Request $request)
+
+    public function store(Request $request)
     {
 
-        $shoppingCar=auth()->user()->shoppingCarActive()->shoppingCarItems;
+        $shoppingCar = auth()->user()->shoppingCarActive()->shoppingCarItems;
 
         //calcula el valor de la compra
-        $description='purchase:';
-        $value=0;
-        foreach ($shoppingCar as $item){
-            $nameItem=$item->product->name;
-            $valueItem=$item->product->value;
-            $amountItem=$item->amount;
+        $description = 'purchase:';
+        $value = 0;
+        foreach ($shoppingCar as $item) {
+            $nameItem = $item->product->name;
+            $valueItem = $item->product->value;
+            $amountItem = $item->amount;
 
-            $value+=$valueItem*$amountItem;
-            $description=$description.' '. $nameItem .' value:'. $valueItem .',amount:'.$amountItem . ',';
+            $value += $valueItem * $amountItem;
+            $description = $description . ' ' . $nameItem . ' value:' . $valueItem . ',amount:' . $amountItem . ',';
         }
 
-        if ($value==0){
+        if ($value == 0) {
             return redirect()->route('shoppingCar.index');
         }
 
 
-        // crear un provider para el inicio de sesion en place to pay
-        $login= config('app.login');
-        $trankey= config('app.trankey');
-        $baseurl= config('app.baseurl');
+        $placetopay = IntegrationPTP::createConnectionPTP();
 
-        //ejemplo integracion con place to pay
-        $placetopay = new PlacetoPay([
-            'login' => $login,
-            'tranKey' => $trankey,
-            'baseUrl' => $baseurl,
-            'timeout' => 10,
-        ]);
-
-        //test de pago
         $reference = Str::random(20);
         $request = [
             'payment' => [
@@ -66,7 +52,7 @@ class SalesController extends Controller
                 'description' => $description,
                 'amount' => [
                     'currency' => 'USD',
-                    'total' => $value,//valor total de la compra
+                    'total' => $value,
                 ],
             ],
             'expiration' => date('c', strtotime('+2 days')),
@@ -75,60 +61,60 @@ class SalesController extends Controller
             'userAgent' => $request->userAgent(),
         ];
 
-        auth()->user()->sales()->create([
-            'description'=>$description,
-            'value'=>$value,
-            'reference'=>$reference
-        ]);
-
-        //agrego la venta a base de datos
-        //poner estatus poner en defecto pendiente
-
-        //respuesta de que la peticion fu exitosa, no es la del pago
         $response = $placetopay->request($request);
+
+        auth()->user()->sales()->create([
+            'description' => $description,
+            'value' => $value,
+            'reference' => $reference,
+            'status' => 'in process',
+            'ptpid' => $response->requestId()
+        ]);
         if ($response->isSuccessful()) {
-            // agregar columna sales que guarde id de la perticion y otra para la id que retorne la pasarela
-            //hacer dd a response para ver all lo que me entrega
             return redirect($response->processUrl());
         } else {
-            // hacer redirect a una vista que me muestre el mensaje de error
-            $response->status()->message();
-            $user=auth()->user();
-            $data=(['error'=>$response->status()->message()]);
+            $user = auth()->user();
+            $data = (['error' => $response->status()->message()]);
             $user->update($data);
             return redirect()->route('error.index');
         }
 
-        //si sale fallido tengo que cambiar la uuid de referencia
     }
 
-    public function show(Sales $sales)
+    public function show()
     {
-        //
+
     }
 
-    public function update(UpdateSalesRequest $request, Sales $sales)
+    public function update(Sale $sale)
     {
+        $reference = $sale->ptpid;
 
-        $placetopay = new PlacetoPay([
-            'login' => 'YOUR_LOGIN', // Provided by PlacetoPay
-            'tranKey' => 'YOUR_TRANSACTIONAL_KEY', // Provided by PlacetoPay
-            'baseUrl' => 'https://THE_BASE_URL_TO_POINT_AT',
-            'timeout' => 10, // (optional) 15 by default
-        ]);
+        $placetopay = IntegrationPTP::createConnectionPTP();
 
-        //THE_REQUEST_ID_TO_QUERY el id de la compra a buscar
-        $response = $placetopay->query('THE_REQUEST_ID_TO_QUERY');
+        $response = $placetopay->query($reference);
 
         if ($response->isSuccessful()) {
-            // In order to use the functions please refer to the Dnetix\Redirection\Message\RedirectInformation class
 
             if ($response->status()->isApproved()) {
-                // The payment has been approved
+                $user = auth()->user();
+                $data = (['error' => $response->status()->message()]);
+                $user->update($data);
+                return redirect()->route('sale.index');
             }
         } else {
-            // There was some error with the connection so check the message
-            print_r($response->status()->message() . "\n");
+            $user = auth()->user();
+            $data = (['error' => $response->status()->message()]);
+            $user->update($data);
+            return redirect()->route('error.index');
         }
+        return redirect()->route('sale.index');
+    }
+
+    public function edit(){
+
+    }
+    public function destroy(){
+
     }
 }

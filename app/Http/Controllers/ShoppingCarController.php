@@ -16,33 +16,4 @@ class ShoppingCarController extends Controller
 
     }
 
-    public function create()
-    {
-        //
-    }
-
-    public function store(StoreShoppingCarRequest $request)
-    {
-        //
-    }
-
-    public function show(ShoppingCar $shoppingCar)
-    {
-        //
-    }
-
-    public function edit(ShoppingCar $shoppingCar)
-    {
-        //
-    }
-
-    public function update(UpdateShoppingCarRequest $request, ShoppingCar $shoppingCar)
-    {
-        //
-    }
-
-    public function destroy(ShoppingCar $shoppingCar)
-    {
-        //
-    }
 }

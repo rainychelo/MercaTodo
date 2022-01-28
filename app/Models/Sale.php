@@ -15,6 +15,7 @@ class Sale extends Model
         'value',
         'status',
         'reference',
-        'url'
+        'url',
+        'ptpid'
     ];
 }

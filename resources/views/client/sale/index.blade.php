@@ -32,11 +32,11 @@
                                 <td class="p-3 text-center">{{$product->status}}</td>
                                 <td class="p-3 flex justify-center">
 
-                                    <form action="{{route('product.show', $product->id)}}" method="POST">
+                                    <form class="px-2" action="{{route('sale.update', $product->ptpid)}}" method="POST">
                                         @csrf
-                                        @method('get')
-                                        <button class="bg-green-500 text-white px-3 py-1 rounded-sm">
-                                            <i class="fas fa-eye-slash"></i>Show details
+                                        @method('put')
+                                        <button class="bg-blue-400 text-white px-3 py-1 rounded-sm">
+                                            <i class="fas fa-eye-slash"></i>Update
                                         </button>
                                     </form>
 

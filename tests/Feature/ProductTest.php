@@ -11,16 +11,18 @@ class ProductTest extends TestCase
 
     public function test_product_can_be_created()
     {
-        $response = $this->post(route('product.store'), [
-            'name' => 'Test User',
+        $request=([
+            'name' => 'Test product',
             'value' => '15',
             'stock' => '100',
             'image_path'=>'1643335494-camisa.jpg'
         ]);
 
+        $response = $this->post(route('product.store',$request));
+
         $this->assertDatabaseHas('products',
             [
-                'name' => 'Test User',
+                'name' => 'Test product',
                 'value' => '15',
                 'stock' => '100'
             ]);
