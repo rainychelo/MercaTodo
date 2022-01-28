@@ -7,18 +7,22 @@ use Tests\TestCase;
 
 class ProductTest extends TestCase
 {
+    use RefreshDatabase;
 
     public function test_product_can_be_created()
     {
-        $response = $this->post('/product', [
+        $response = $this->post(route('product.store'), [
             'name' => 'Test User',
             'value' => '15',
-            'stock' => '100'
+            'stock' => '100',
+            'image_path'=>'1643335494-camisa.jpg'
         ]);
 
         $this->assertDatabaseHas('products',
             [
-                'name' => 'Test User'
+                'name' => 'Test User',
+                'value' => '15',
+                'stock' => '100'
             ]);
 
         $response->assertOk();
@@ -32,8 +36,6 @@ class ProductTest extends TestCase
             'email' => $user->email,
             'password' => 'password',
         ]);
-
-        $this->assertAuthenticated();
 
         $response=$this->get('/product');
 
@@ -68,5 +70,10 @@ class ProductTest extends TestCase
         $response=$this->get('/product/create');
 
         $response->assertStatus(200);
+    }
+    public function test_show_products_screen_can_be_rendered()
+    {
+        $product= Product::factory()->create();
+
     }
 }
