@@ -10,28 +10,19 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <h1 class="text-3xl text-center font-bold">Shopping cart</h1>
 
+
                 <form method="POST" action="{{route('sale.store')}}">
                     @csrf
                     <button class="bg-yellow-500 text-white px-3 py-1 rounded-sm mx-2">
                         <i class="fas fa-trash"></i>Buy
                     </button>
                 </form>
-
-                <div class="py-2">
-                    <form method="GET" action="{{ route('product.index')}}">
-                        @csrf
-                        <tr>
-                            <td><input id="search" name="search" type="text"
-                                       class="border-2 border-black-300 rounded mx-2"
-                                       placeholder="Search by name"></td>
-                            <td>
-                                <x-button class="bg-blue-400 text-white px-3 py-1 rounded-sm mx-1">
-                                    {{ __('Search') }}
-                                </x-button>
-                            </td>
-                        </tr>
-                    </form>
-                </div>
+                <form class="py-2" action="{{route('sale.index')}}">
+                    @csrf
+                    <button class="bg-blue-400 text-white px-3 py-1 rounded-sm mx-2">
+                        <i class="fas fa-trash"></i>Your orders
+                    </button>
+                </form>
 
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg py-2">
 
@@ -51,7 +42,26 @@
                             <tr>
                                 <td class="py-3 px-6">{{$product->product->name}}</td>
                                 <td class="p-3 text-center">{{$product->product->value}} {{$currency}}</td>
-                                <td class="p-3 text-center">{{$product->amount}}</td>
+
+                                <td>
+                                <form method="POST" action="{{ route('shoppingCars.items.update',['product'=>$product->product,]) }}"
+                                      enctype="multipart/form-data">
+                                    @csrf
+                                    @method('POST')
+                                    <div class="py-5">
+                                        <x-input id="amount" class="block mt-1 w-full" type="number" min="1"
+                                                 name="amount" :value="old('amount') ?? $product->amount" required
+                                                 autofocus/>
+                                    </div>
+
+                                    <div>
+                                        <button class="bg-blue-400 text-white px-3 py-1 rounded-sm mx-2">
+                                            <i class="fas fa-trash"></i>Change
+                                        </button>
+                                    </div>
+                                </form>
+                                </td>
+
                                 <td class="p-3 text-center">
                                     <img src="{{asset('images/'.$product->product->image_path)}}" alt="">
                                 </td>
@@ -73,20 +83,19 @@
                                                 <i class="fas fa-trash"></i>Edit
                                             </button>
                                         </form>
-
-                                        <form action="{{route('shoppingCarItem.destroy',$product)}}" method="POST">
-                                            @csrf
-                                            <button class="bg-red-500 text-white px-3 py-1 rounded-sm mx-1">
-                                                <i class="fas fa-trash"></i>Delete
-                                            </button>
-                                        </form>
                                     @endcan
+                                    <form action="{{route('shoppingCarItem.destroy',$product->id)}}" method="POST">
+                                        @csrf
+                                        @method('delete')
+                                        <button class="bg-red-500 text-white px-3 py-1 rounded-sm mx-1">
+                                            <i class="fas fa-trash"></i>Delete
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </div>

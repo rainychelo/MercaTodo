@@ -17,6 +17,13 @@ class UserSeeder extends Seeder
             'password'=>Hash::make(12345678)
         ])->assignRole('Admin');
 
+        User::create([
+            'name'=>'pedro papa',
+            'email'=>'client@test.com',
+            'email_verified_at' => now(),
+            'password'=>Hash::make(12345678)
+        ])->assignRole('Client');
+
         User::factory(90)->create();
     }
 }

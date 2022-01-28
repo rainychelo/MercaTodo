@@ -10,7 +10,10 @@ class ShoppingCarController extends Controller
 {
     public function index()
     {
-        //
+        $shoppingCar=auth()->user()->shoppingCarActive()->shoppingCarItems;
+        $currency=config('app.currency');
+        return view('client.cart.index',compact('shoppingCar','currency'));
+
     }
 
     public function create()

@@ -22,6 +22,8 @@ class RoleSeeder extends Seeder
         Permission::create(['name'=>'category.create'])->assignRole($roleAdmin);
         Permission::create(['name'=>'product.create'])->assignRole($roleAdmin);
 
+        Permission::create(['name'=>'product.index'])->assignRole($roleClient);
+
 
     }
 }

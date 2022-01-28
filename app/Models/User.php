@@ -23,6 +23,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'error'
     ];
 
     /**
@@ -52,5 +53,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function shoppingCarActive():ShoppingCar
     {
         return $this->shoppingCars()->latest()->first() ?? $this->shoppingCars()->create();
+    }
+
+    public function sales():HasMany
+    {
+        return $this->hasMany(Sale::class);
     }
 }

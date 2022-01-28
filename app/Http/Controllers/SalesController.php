@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Sales;
-use App\Http\Requests\StoreSalesRequest;
-use App\Http\Requests\UpdateSalesRequest;
-use App\Models\ShoppingCart;
+use App\Models\Sale;
+use App\Models\ShoppingCar;
 use App\Providers\RouteServiceProvider;
 use Dnetix\Redirection\PlacetoPay;
-use http\Env\Request;
 use Illuminate\Routing\Route;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class SalesController extends Controller
 {
     public function index(): View
     {
-        return view('welcome');
+        $sales = Sale::where('user_id', auth()->user()->id)->paginate(5);
+        $currency=config('app.currency');
+        return view('client.sale.index',compact('sales','currency'));
     }
     public function create()
     {
@@ -25,6 +25,26 @@ class SalesController extends Controller
     //cambiar tipo request
     public function store(\Illuminate\Http\Request $request)
     {
+
+        $shoppingCar=auth()->user()->shoppingCarActive()->shoppingCarItems;
+
+        //calcula el valor de la compra
+        $description='purchase:';
+        $value=0;
+        foreach ($shoppingCar as $item){
+            $nameItem=$item->product->name;
+            $valueItem=$item->product->value;
+            $amountItem=$item->amount;
+
+            $value+=$valueItem*$amountItem;
+            $description=$description.' '. $nameItem .' value:'. $valueItem .',amount:'.$amountItem . ',';
+        }
+
+        if ($value==0){
+            return redirect()->route('shoppingCar.index');
+        }
+
+
         // crear un provider para el inicio de sesion en place to pay
         $login= config('app.login');
         $trankey= config('app.trankey');
@@ -39,21 +59,27 @@ class SalesController extends Controller
         ]);
 
         //test de pago
-        $reference = 'COULD_BE_THE_PAYMENT_ORDER_ID';
+        $reference = Str::random(20);
         $request = [
             'payment' => [
                 'reference' => $reference,
-                'description' => 'Testing payment',//el id del cliente, y los productos a comprar
+                'description' => $description,
                 'amount' => [
                     'currency' => 'USD',
-                    'total' => 120,//valor total de la compra
+                    'total' => $value,//valor total de la compra
                 ],
             ],
             'expiration' => date('c', strtotime('+2 days')),
-            'returnUrl' => route('dashboard'),
+            'returnUrl' => route('sale.index'),
             'ipAddress' => $request->ip(),
             'userAgent' => $request->userAgent(),
         ];
+
+        auth()->user()->sales()->create([
+            'description'=>$description,
+            'value'=>$value,
+            'reference'=>$reference
+        ]);
 
         //agrego la venta a base de datos
         //poner estatus poner en defecto pendiente
@@ -67,6 +93,10 @@ class SalesController extends Controller
         } else {
             // hacer redirect a una vista que me muestre el mensaje de error
             $response->status()->message();
+            $user=auth()->user();
+            $data=(['error'=>$response->status()->message()]);
+            $user->update($data);
+            return redirect()->route('error.index');
         }
 
         //si sale fallido tengo que cambiar la uuid de referencia

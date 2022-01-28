@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('role')->nullable();
             $table->enum('status',['ACTIVE','DEACTIVE'])->default('ACTIVE');
+            $table->string('error')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -14,10 +14,8 @@ class ProductController extends Controller
 {
     public function index(SearchRequest $request): View
     {
-        $products = Product::where('name', 'LIKE', '%' . $request->input('search') . '%')->paginate(5);
+        $products = Product::where('name', 'LIKE', '%' . $request->input('search') . '%')->paginate(6);
         $currency= config('app.currency');
-
-        //admin.product.index
         return view('admin.product.index', compact('products','currency'));
     }
 
@@ -79,7 +77,6 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $image = 'images/' . $product->image_path;
-
 
         if (File::exists($image)) {
             File::delete($image);

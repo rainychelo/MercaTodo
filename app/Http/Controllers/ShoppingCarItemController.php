@@ -13,79 +13,87 @@ use phpDocumentor\Reflection\Types\Integer;
 
 class ShoppingCarItemController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
+
     public function index()
     {
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
     public function create()
     {
 
     }
 
-    public function store(StoreItemShoppingCarRequest $request,ShoppingCar $shoppingCar,Product $product): RedirectResponse
+    public function store(StoreItemShoppingCarRequest $request, ShoppingCar $shoppingCar, Product $product): RedirectResponse
     {
-        $shoppingCar->shoppingCarItems()->create([
-            'product_id'=>$product->getKey(),
-            'amount'=>$request->input('amount')
-        ]);
+        $shoppingCarItem = auth()->user()->shoppingCarActive()->shoppingCarItems;
+        $itemSelected =
+        $amountTotal = 0;
+        foreach ($shoppingCarItem as $item) {
+            if ($item->product_id == $product->id) {
+                $itemSelected = $item;
+                $amountTotal = ($item->amount) + ($request->input('amount'));
+            }
+        }
+        if ($amountTotal <= $product->stock and $amountTotal != 0) {
+            $data = (['amount' => $amountTotal]);
+            $itemSelected->update($data);
+            return redirect()->route('shoppingCar.index');
+        } elseif ($amountTotal > $product->stock) {
+            return redirect()->route('shoppingCar.index');
+        }
+        if ($request->input('amount') <= $product->stock) {
 
-        return redirect()->route('product.index');
+            $shoppingCar->shoppingCarItems()->create([
+                'product_id' => $product->getKey(),
+                'amount' => $request->input('amount')
+            ]);
+
+            return redirect()->route('product.index');
+
+        } else {
+
+            return redirect()->route('product.show', compact('product'));
+        }
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\ShoppingCarItem  $itemShoppingCar
-     * @return Response
-     */
     public function show(ShoppingCarItem $itemShoppingCar)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\ShoppingCarItem  $itemShoppingCar
-     * @return Response
-     */
     public function edit(ShoppingCarItem $itemShoppingCar)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateItemShoppingCarRequest  $request
-     * @param  \App\Models\ShoppingCarItem  $itemShoppingCar
-     * @return Response
-     */
-    public function update(UpdateItemShoppingCarRequest $request, ShoppingCarItem $itemShoppingCar)
+    public function update(UpdateItemShoppingCarRequest $request,Product $product)
     {
-        //
+        $shoppingCarItem = auth()->user()->shoppingCarActive()->shoppingCarItems;
+        $itemSelected =
+        $amount=$request->input('amount');
+        foreach ($shoppingCarItem as $item)
+        {
+            if ($item->product_id == $product->id) {
+                $itemSelected = $item;
+            }
+        }
+
+
+        if ($amount > $product->stock){
+            return redirect()->route('shoppingCar.index');
+        }else{
+            $data=(['amount'=>$amount]);
+            $itemSelected->update($data);
+            return redirect()->route('shoppingCar.index');
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\ShoppingCarItem  $itemShoppingCar
-     * @return Response
-     */
-    public function destroy(ShoppingCarItem $itemShoppingCar)
+    public function destroy($id)
     {
-        //
+        $itemShoppingCar = ShoppingCarItem::find($id);
+        $itemShoppingCar->delete();
+        return redirect()->route('shoppingCar.index');
     }
 }

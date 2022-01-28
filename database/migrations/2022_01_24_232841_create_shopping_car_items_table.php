@@ -20,8 +20,8 @@ class CreateShoppingCarItemsTable extends Migration
             $table->bigInteger('amount');
             $table->timestamps();
 
-            $table->foreign('product_id')->on('products')->references('id');
-            $table->foreign('shopping_car_id')->on('shopping_cars')->references('id');
+            $table->foreign('product_id')->on('products')->references('id')->onDelete('cascade');;
+            $table->foreign('shopping_car_id')->on('shopping_cars')->references('id')->onDelete('cascade');;
         });
     }
 

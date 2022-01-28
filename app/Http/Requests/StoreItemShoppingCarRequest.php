@@ -24,7 +24,7 @@ class StoreItemShoppingCarRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'amount'=>'required|integer|min:1'
         ];
     }
 }

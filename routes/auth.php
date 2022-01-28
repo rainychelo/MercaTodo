@@ -8,8 +8,10 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\ErrorView;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\ShoppingCarController;
 use App\Http\Controllers\ShoppingCarItemController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\adminController;
@@ -90,4 +92,14 @@ Route::resource('product', ProductController::class);
 Route::post('/shopping-cars/{shoppingCar}/create/{product}', [ShoppingCarItemController::class, 'store'])
     ->name('shoppingCars.items.store');
 
+Route::post('/shopping-cars/update/{product}', [ShoppingCarItemController::class, 'update'])
+    ->name('shoppingCars.items.update');
+
+Route::resource('shoppingCarItem',ShoppingCarItemController::class);
+
+Route::resource('shoppingCar', ShoppingCarController::class);
+
+Route::resource('sale',SalesController::class);
+
+Route::get('error', [ErrorView::class,'index'])->name('error.index');
 
