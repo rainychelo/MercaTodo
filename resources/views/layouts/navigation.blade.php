@@ -23,11 +23,6 @@
                             {{ __('Users') }}
                         </x-nav-link>
                     </div>
-                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                        <x-nav-link :href="route('category.index')" :active="request()->routeIs('category.index')">
-                            {{ __('Categories') }}
-                        </x-nav-link>
-                    </div>
                 @endcan
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
@@ -35,6 +30,13 @@
                         {{ __('products') }}
                     </x-nav-link>
                 </div>
+            </div>
+
+            <!-- cart logo -->
+            <div class="flex-shrink-0 flex items-center">
+                <a href="{{ route('shoppingCar.index') }}">
+                    <x-car_logo class="block h-10 w-auto fill-current text-gray-600"/>
+                </a>
             </div>
 
             <!-- Settings Dropdown -->
@@ -86,6 +88,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">

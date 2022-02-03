@@ -232,6 +232,9 @@ return [
 
     ],
 
-    'currency'=>env('CURRENCY','USD')
+    'currency'=>env('CURRENCY','USD'),
+    'baseurl'=>env('BASEURL'),
+    'login'=>env('LOGIN'),
+    'trankey'=>env('TRANKEY')
 
 ];

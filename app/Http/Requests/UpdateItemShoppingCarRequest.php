@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Image;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreImagetRequest extends FormRequest
+class UpdateItemShoppingCarRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class StoreImagetRequest extends FormRequest
     public function rules()
     {
         return [
-            'image'=>'required|mimes:jpg,png,jpeg|max:5048'
+            'amount'=>'integer|min:1'
         ];
     }
 }

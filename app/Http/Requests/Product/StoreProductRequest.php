@@ -25,8 +25,9 @@ class StoreProductRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:products|string|max:120',
-            'value' => 'required',
-            'image'=>'required|mimes:jpg,png,jpeg|max:250'
+            'value' => 'required|integer|min:1',
+            'image' => 'required|image|max:250',
+            'stock' => 'nullable|integer'
         ];
     }
 }

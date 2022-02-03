@@ -24,7 +24,14 @@
             <div>
                 <x-label for="value" :value="__('Value')"/>
 
-                <x-input id="value" class="block mt-1 w-full" type="number" name="value" :value="old('value')" required
+                <x-input id="value" class="block mt-1 w-full" type="number" min="1" name="value" :value="old('value')" required
+                         autofocus/>
+            </div>
+
+            <div>
+                <x-label for="stock" :value="__('Stock')"/>
+
+                <x-input id="stock" class="block mt-1 w-full" type="number" min="1"  name="stock" :value="old('stock')" required
                          autofocus/>
             </div>
 
@@ -43,7 +50,7 @@
         <form action="{{ route('product.index') }}">
             <div class="flex items-center justify-end mt-4 ">
                 <x-button class="ml-4 bg-red-500">
-                    {{ __('Cancelar') }}
+                    {{ __('Cancel') }}
                 </x-button>
             </div>
         </form>

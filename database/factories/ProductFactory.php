@@ -14,7 +14,10 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->name(),
+            'value'=>$this->faker->randomNumber(),
+            'stock'=>$this->faker->randomNumber(),
+            'image_path'=>'1643335494-camisa.jpg'
         ];
     }
 }

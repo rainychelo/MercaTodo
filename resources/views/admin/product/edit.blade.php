@@ -24,7 +24,14 @@
             <div class="py-5">
                 <x-label for="value" :value="__('Value')"/>
 
-                <x-input id="value" class="block mt-1 w-full" type="number" name="value" :value="old('value') ?? $product->value" required
+                <x-input id="value" class="block mt-1 w-full" type="number" min="1" name="value" :value="old('value') ?? $product->value" required
+                         autofocus/>
+            </div>
+
+            <div>
+                <x-label for="stock" :value="__('Stock')"/>
+
+                <x-input id="stock" class="block mt-1 w-full" type="number" min="1"  name="stock" :value="old('stock') ?? $product->stock" required
                          autofocus/>
             </div>
 

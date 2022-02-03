@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Image;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateImagetRequest extends FormRequest
+class UpdateShoppingCarRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class UpdateImagetRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
