@@ -23,16 +23,16 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($sales as $product)
+                        @foreach($sales as $sale)
 
                             <tr>
-                                <td class="py-3 px-6">{{$product->reference}}</td>
-                                <td class="p-3 text-center">{{$product->value}} {{$currency}}</td>
-                                <td class="p-3 text-center">{{$product->description}}</td>
-                                <td class="p-3 text-center">{{$product->status}}</td>
+                                <td class="py-3 px-6">{{$sale->reference}}</td>
+                                <td class="p-3 text-center">{{$sale->value}} {{$currency}}</td>
+                                <td class="p-3 text-center">{{$sale->description}}</td>
+                                <td class="p-3 text-center">{{$sale->status}}</td>
                                 <td class="p-3 flex justify-center">
 
-                                    <form class="px-2" action="{{route('sale.update', $product->ptpid)}}" method="POST">
+                                    <form class="px-2" action="{{route('sale.update', $sale)}}" method="POST">
                                         @csrf
                                         @method('put')
                                         <button class="bg-blue-400 text-white px-3 py-1 rounded-sm">
