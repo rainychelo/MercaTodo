@@ -81,11 +81,6 @@ class SalesController extends Controller
 
     }
 
-    public function show()
-    {
-
-    }
-
     public function update(Sale $sale)
     {
         $reference = $sale->ptpid;
@@ -94,27 +89,14 @@ class SalesController extends Controller
 
         $response = $placetopay->query($reference);
 
+        //solo guardar estado, en caso de fallo redireccionar y mostrar error
         if ($response->isSuccessful()) {
-
-            if ($response->status()->isApproved()) {
-                $user = auth()->user();
-                $data = (['error' => $response->status()->message()]);
-                $user->update($data);
-                return redirect()->route('sale.index');
-            }
+            $sale->status=$response->status()->status();
         } else {
-            $user = auth()->user();
-            $data = (['error' => $response->status()->message()]);
-            $user->update($data);
-            return redirect()->route('error.index');
+            return redirect()->back()->withErrors($response->status()->message());
         }
+        $sale->save();
         return redirect()->route('sale.index');
     }
 
-    public function edit(){
-
-    }
-    public function destroy(){
-
-    }
 }
